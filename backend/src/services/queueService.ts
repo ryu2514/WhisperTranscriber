@@ -14,17 +14,44 @@ class QueueService {
     let redisConfig: any
 
     if (process.env.UPSTASH_REDIS_URL) {
-      // Production: Use Upstash Redis with standard Redis protocol
-      const redisUrl = new URL(process.env.UPSTASH_REDIS_URL)
-      redisConfig = {
-        host: redisUrl.hostname,
-        port: parseInt(redisUrl.port) || 6379,
-        password: redisUrl.password,
-        username: redisUrl.username || 'default',
-        tls: process.env.NODE_ENV === 'production' ? {} : undefined,
-        maxRetriesPerRequest: 3,
-        connectTimeout: 10000,
-        lazyConnect: true,
+      try {
+        // Production: Use Upstash Redis with standard Redis protocol
+        let redisUrlString = process.env.UPSTASH_REDIS_URL
+
+        // Clean up the URL if it contains CLI command syntax
+        if (redisUrlString.includes('redis-cli')) {
+          // Extract the actual URL from CLI command format
+          const urlMatch = redisUrlString.match(/redis:\/\/[^\s]+/)
+          if (urlMatch) {
+            redisUrlString = urlMatch[0]
+          } else {
+            throw new Error('Unable to extract Redis URL from CLI command format')
+          }
+        }
+
+        const redisUrl = new URL(redisUrlString)
+        redisConfig = {
+          host: redisUrl.hostname,
+          port: parseInt(redisUrl.port) || 6379,
+          password: redisUrl.password,
+          username: redisUrl.username || 'default',
+          tls: process.env.NODE_ENV === 'production' ? {} : undefined,
+          maxRetriesPerRequest: 3,
+          connectTimeout: 10000,
+          lazyConnect: true,
+        }
+        logger.info('Using Upstash Redis configuration')
+      } catch (error) {
+        logger.warn('Invalid UPSTASH_REDIS_URL format, falling back to local Redis', {
+          error: error instanceof Error ? error.message : 'Unknown error'
+        })
+        // Fall back to local Redis configuration
+        redisConfig = {
+          host: process.env.REDIS_HOST || 'localhost',
+          port: parseInt(process.env.REDIS_PORT || '6379'),
+          password: process.env.REDIS_PASSWORD || undefined,
+          maxRetriesPerRequest: 1,
+        }
       }
     } else {
       // Development: Local Redis or in-memory fallback
