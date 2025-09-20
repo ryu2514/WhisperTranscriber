@@ -1,7 +1,7 @@
 // ミニマルなWhisperTranscriber JavaScript
 class WhisperTranscriber {
     constructor() {
-        this.apiBaseUrl = 'https://whisper-transcriber-api-jjth.onrender.com/api';
+        this.apiBaseUrl = 'https://whisper-transcriber-api.onrender.com/api';
         this.currentUploadId = null;
         this.currentTranscriptionId = null;
         this.pollInterval = null;
