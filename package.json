@@ -1,0 +1,59 @@
+{
+  "name": "whisper-transcriber",
+  "version": "1.0.0",
+  "description": "セラピスト向け完全無料音声文字起こしツール",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:frontend && npm run install:backend",
+    "install:frontend": "cd frontend && npm install",
+    "install:backend": "cd backend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:frontend": "cd frontend && npm run preview",
+    "start:backend": "cd backend && npm start",
+    "test": "npm run test:frontend && npm run test:backend",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && npm test",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:backend": "cd backend && npm run lint || echo 'Backend linting not configured'",
+    "clean": "rm -rf frontend/dist frontend/node_modules backend/dist backend/node_modules node_modules",
+    "deploy:frontend": "cd frontend && vercel --prod",
+    "deploy:backend": "echo 'Deploy backend via Render dashboard or git push'",
+    "deploy": "npm run build && npm run deploy:frontend",
+    "setup:vercel": "vercel --confirm",
+    "setup:render": "echo 'Create Render account and connect GitHub repo'",
+    "setup:supabase": "echo 'Create Supabase project and run migrations'",
+    "setup:upstash": "echo 'Create Upstash Redis database'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "whisper",
+    "transcription",
+    "speech-to-text",
+    "therapist",
+    "medical",
+    "accessibility"
+  ],
+  "author": "小林龍樹",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kobayashiryuju/whisper-transcriber.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kobayashiryuju/whisper-transcriber/issues"
+  },
+  "homepage": "https://github.com/kobayashiryuju/whisper-transcriber#readme"
+}
