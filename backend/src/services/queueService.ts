@@ -313,6 +313,44 @@ class QueueService {
       return false
     }
   }
+
+  // Get health status for API testing
+  async getHealthStatus(): Promise<{
+    redis: {
+      status: 'healthy' | 'unhealthy'
+      error?: string
+    }
+    queue: {
+      status: 'healthy' | 'unhealthy'
+      stats?: any
+    }
+  }> {
+    try {
+      const stats = await this.getQueueStats()
+      return {
+        redis: {
+          status: 'healthy'
+        },
+        queue: {
+          status: 'healthy',
+          stats
+        }
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+      logger.error('Queue health status check failed', error)
+
+      return {
+        redis: {
+          status: 'unhealthy',
+          error: errorMessage
+        },
+        queue: {
+          status: 'unhealthy'
+        }
+      }
+    }
+  }
 }
 
 export const queueService = new QueueService()
