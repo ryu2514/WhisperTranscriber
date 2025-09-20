@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhisperTranscriber - セラピスト向け音声転写ツール</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎙️ WhisperTranscriber</h1>
+            <p>セラピスト向け音声転写ツール</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <h2>音声ファイルをアップロード</h2>
+                <div class="file-input-container">
+                    <input type="file" id="audioFile" accept="audio/*,video/*" />
+                    <label for="audioFile" class="file-label">
+                        📁 ファイルを選択
+                    </label>
+                </div>
+                <p class="file-info" id="fileInfo"></p>
+
+                <div class="options">
+                    <label>
+                        <input type="checkbox" id="timestamps" checked>
+                        タイムスタンプを含める
+                    </label>
+                </div>
+
+                <button id="uploadBtn" class="upload-btn" disabled>
+                    🚀 転写開始
+                </button>
+            </div>
+
+            <div class="status-section" id="statusSection" style="display: none;">
+                <h3>処理状況</h3>
+                <div class="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <p id="statusText">アップロード中...</p>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h3>転写結果</h3>
+                <textarea id="resultText" readonly></textarea>
+                <div class="download-section">
+                    <button id="downloadTxt" class="download-btn">
+                        📄 テキストファイルでダウンロード
+                    </button>
+                    <button id="copyText" class="copy-btn">
+                        📋 クリップボードにコピー
+                    </button>
+                </div>
+            </div>
+
+            <div class="error-section" id="errorSection" style="display: none;">
+                <h3>❌ エラーが発生しました</h3>
+                <p id="errorText"></p>
+                <button id="retryBtn" class="retry-btn">再試行</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 WhisperTranscriber - セラピスト専用ツール</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

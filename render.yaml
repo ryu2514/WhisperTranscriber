@@ -33,15 +33,15 @@ services:
     domains:
       - whisper-transcriber-api.onrender.com
 
-  # Frontend Static Site
+  # Frontend Static Site (Minimal)
   - type: web
     name: whisper-transcriber-frontend
     env: static
-    buildCommand: cd frontend && rm -rf node_modules package-lock.json && npm install && npm install @rollup/rollup-linux-x64-gnu --save-dev && npm run build
-    staticPublishPath: frontend/dist
+    buildCommand: echo "No build needed for static HTML"
+    staticPublishPath: frontend-minimal
     buildFilter:
       paths:
-        - frontend/**
+        - frontend-minimal/**
     domains:
       - whisper-transcriber.onrender.com
     headers:
