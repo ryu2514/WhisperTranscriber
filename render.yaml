@@ -37,7 +37,6 @@ services:
   - type: web
     name: whisper-transcriber-frontend
     env: static
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     buildFilter:
