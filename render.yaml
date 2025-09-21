@@ -39,9 +39,6 @@ services:
     env: static
     buildCommand: echo "No build needed for static HTML"
     staticPublishPath: frontend-minimal
-    buildFilter:
-      paths:
-        - frontend-minimal/**
     domains:
       - whisper-transcriber.onrender.com
     headers:
