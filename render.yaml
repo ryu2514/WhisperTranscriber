@@ -11,7 +11,7 @@ services:
       - key: PORT
         value: 10000
       - key: CORS_ORIGIN
-        value: https://whisper-transcriber-frontend-mcqh.onrender.com
+        value: https://whisper-transcriber-minimal.onrender.com
       - key: DATABASE_URL
         fromDatabase:
           name: whisper-transcriber-db
@@ -35,12 +35,10 @@ services:
 
   # Frontend Static Site (Minimal)
   - type: web
-    name: whisper-transcriber-frontend
+    name: whisper-transcriber-minimal
     env: static
     buildCommand: echo "No build needed for static HTML"
     staticPublishPath: frontend-minimal
-    domains:
-      - whisper-transcriber-frontend-mcqh.onrender.com
     headers:
       - path: /*
         name: X-Frame-Options
