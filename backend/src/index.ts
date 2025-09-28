@@ -21,6 +21,18 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// Helper: parse comma-separated origins
+const parseOrigins = (value?: string): string[] => {
+  return (value || '')
+    .split(',')
+    .map(s => s.trim())
+    .filter(Boolean)
+}
+
+const defaultOrigin = 'http://localhost:3000'
+const allowedOrigins = parseOrigins(process.env.CORS_ORIGIN)
+const effectiveAllowed = allowedOrigins.length > 0 ? allowedOrigins : [defaultOrigin]
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
@@ -29,7 +41,7 @@ app.use(helmet({
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'"],
       imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", process.env.CORS_ORIGIN || 'http://localhost:3000'],
+      connectSrc: ["'self'", ...effectiveAllowed],
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       objectSrc: ["'none'"],
       mediaSrc: ["'self'"],
@@ -49,7 +61,15 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow non-browser requests
+    if (!origin) return callback(null, true)
+
+    if (effectiveAllowed.includes(origin)) {
+      return callback(null, true)
+    }
+    return callback(new Error('CORS not allowed'), false)
+  },
   credentials: true,
 }))
 
