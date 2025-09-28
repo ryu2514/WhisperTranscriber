@@ -30,12 +30,15 @@ router.get('/', asyncHandler(async (req, res) => {
     checks.queue = false
   }
 
-  const allHealthy = Object.values(checks).every(check =>
-    typeof check === 'boolean' ? check : true
-  )
+  // Determine health: allow degraded (e.g., Redis not configured) without failing
+  const status = (checks.server && checks.database && checks.queue)
+    ? 'healthy'
+    : (checks.server && checks.database)
+      ? 'degraded'
+      : 'unhealthy'
 
-  res.status(allHealthy ? 200 : 503).json({
-    status: allHealthy ? 'healthy' : 'unhealthy',
+  res.status(status === 'unhealthy' ? 503 : 200).json({
+    status,
     checks,
   })
 }))

@@ -35,6 +35,13 @@ class Database {
 
   async initialize(): Promise<void> {
     try {
+      // Ensure required extensions exist (e.g., for gen_random_uuid())
+      try {
+        await this.pool.query("CREATE EXTENSION IF NOT EXISTS pgcrypto;")
+      } catch (extErr) {
+        console.warn('Failed to ensure pgcrypto extension:', extErr)
+      }
+
       await this.createTables()
       console.log('Database initialized successfully')
     } catch (error) {

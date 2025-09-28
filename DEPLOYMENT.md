@@ -115,9 +115,8 @@ CREATE INDEX idx_error_logs_created_at ON error_logs(created_at);
 
 #### Backend 環境変数
 - `OPENAI_API_KEY`: OpenAI API キー
-- `UPSTASH_REDIS_REST_URL`: Upstash Redis REST URL
-- `UPSTASH_REDIS_REST_TOKEN`: Upstash Redis REST Token
-- `DATABASE_URL`: Supabase データベース URL（自動設定）
+- `UPSTASH_REDIS_URL`: Upstash Redis 接続URL（例: `redis://default:password@host:6379`）
+- `DATABASE_URL`: Supabase/Render のデータベース URL（自動設定可）
 
 #### Frontend 環境変数
 フロントエンドは静的サイトのため、ビルド時に `.env.production` が使用されます。
@@ -142,8 +141,7 @@ Render は自動的に Let's Encrypt SSL 証明書を提供します。
 NODE_ENV=production
 PORT=10000
 DATABASE_URL=postgresql://user:pass@host:port/db
-UPSTASH_REDIS_REST_URL=https://xxx.upstash.io
-UPSTASH_REDIS_REST_TOKEN=xxx
+UPSTASH_REDIS_URL=redis://default:password@host:6379
 OPENAI_API_KEY=sk-xxx
 CORS_ORIGIN=https://whisper-transcriber.onrender.com
 MAX_FILE_SIZE=524288000
@@ -155,7 +153,7 @@ JWT_SECRET=auto-generated-by-render
 
 ### Frontend (.env.production)
 ```
-VITE_API_BASE_URL=https://whisper-transcriber-api.onrender.com
+VITE_API_URL=https://whisper-transcriber-api.onrender.com
 VITE_APP_NAME=WhisperTranscriber
 VITE_APP_VERSION=1.0.0
 VITE_ENABLE_PWA=true
