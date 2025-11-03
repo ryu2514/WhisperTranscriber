@@ -36,7 +36,7 @@
     "setup:upstash": "echo 'Create Upstash Redis database'"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^9.2.1"
   },
   "keywords": [
     "whisper",
